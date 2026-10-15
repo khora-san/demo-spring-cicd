@@ -1,0 +1,44 @@
+name: Intégration continue
+# Déclenchement auto
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write # pour la mise à jour de l'onglet Security and quality
+      contents: read # lire le code source
+
+    steps:
+      # checkout et setup-java
+      - name: Récupérer le code
+        uses: actions/checkout@v5
+
+      - name: Configurer JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Initialiser CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: java-kotlin
+
+      - name: Construire avec Maven
+        run: mvn -B clean package -DskipTests
+
+      - name: Analyser avec CodeQL
+        uses: github/codeql-action/analyze@v4
+        with:
+          output: sarif-results
+
+      - name: Publier le rapport
+        uses: actions/upload-artifact@v5
+        with:
+          name: rapport-codeql
+          path: sarif-results
