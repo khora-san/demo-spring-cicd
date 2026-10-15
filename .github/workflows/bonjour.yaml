@@ -1,11 +1,14 @@
-name: Exemple Bonjour
-run-name: Exemple Bonjour
+name: Affichage fichiers
+# Déclenchement manuel uniquement
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:   # bouton "Run workflow" dans l'onglet Actions
 jobs:
-  dire-bonjour:
+  affichage:
     runs-on: ubuntu-latest
     steps:
-      - name: Afficher Bonjour
-        run: echo "Bonjour depuis GitHub Actions !"
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+      - name: Lister les fichiers
+        run: ls -la
+      - name: Voir l'arborescence
+        run: ls -R
