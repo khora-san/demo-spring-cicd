@@ -44,9 +44,22 @@ jobs:
           name: rapport-codeql
           path: sarif-results
 
+      # Java Code Coverage
       - name: Publier le rapport JaCoCo
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: rapport-jacoco
           path: target/site/jacoco
+
+      # Checkstyle
+      - name: Générer le rapport Checkstyle
+        run: mvn site
+        # ``run: mvn -B checkstyle:checkstyle`` est plus rapide
+        # mais ne génère que checkstyle-result.xml
+
+      - name: Publier le rapport Checkstyle
+        uses: actions/upload-artifact@v7
+        with:
+          name: rapport-checkstyle
+          path: target/site/checkstyle.html
