@@ -58,6 +58,9 @@ jobs:
         # ``run: mvn -B checkstyle:checkstyle`` est plus rapide
         # mais ne génère que checkstyle-result.xml
 
+      - name: Nettoyer le rapport JaCoCo du site (déjà publié séparément)
+        run: rm -rf target/site/jacoco
+
       - name: Publier le rapport Checkstyle
         uses: actions/upload-artifact@v7
         with:
