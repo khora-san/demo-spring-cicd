@@ -52,8 +52,8 @@ jobs:
           name: rapport-jacoco
           path: target/site/jacoco
 
-      # Checkstyle
-      - name: Générer le rapport Checkstyle
+      # Qualité de code (Checkstyle + SpotBugs)
+      - name: Générer le rapport de qualité (site Maven)
         run: mvn site
         # ``run: mvn -B checkstyle:checkstyle`` est plus rapide
         # mais ne génère que checkstyle-result.xml
@@ -61,8 +61,8 @@ jobs:
       - name: Nettoyer le rapport JaCoCo du site (déjà publié séparément)
         run: rm -rf target/site/jacoco
 
-      - name: Publier le rapport Checkstyle
+      - name: Publier le rapport de qualité
         uses: actions/upload-artifact@v7
         with:
-          name: rapport-checkstyle
+          name: rapport-qualite
           path: target/site
